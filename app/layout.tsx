@@ -1,6 +1,7 @@
 import Navigation from "./_components/Navigation";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
+import ReactQueryProvider from "./_utils/providers";
 import "@/app/_styles/globals.css";
 
 export const metadata = {
@@ -16,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}  min-h-screen `}>
-        <Navigation />
-        <main> {children}</main>
+        <ReactQueryProvider>
+          <Navigation />
+          <main> {children}</main>
+        </ReactQueryProvider>
       </body>
     </html>
   );
