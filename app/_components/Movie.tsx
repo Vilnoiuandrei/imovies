@@ -42,7 +42,7 @@ export default function Movie({ movie }: MovieInterface) {
   return (
     <li
       key={movie.id}
-      className="bg-gray-900 gird rounded-lg border-black cursor-pointer border-4  overflow-hidden"
+      className="bg-gray-900 gird rounded-lg border-black cursor-pointer border-4  overflow-hidden text-lg"
       onClick={handleToggle}
     >
       <h3 className="text-3xl text-center py-1">{movie.title}</h3>
@@ -54,8 +54,8 @@ export default function Movie({ movie }: MovieInterface) {
         placeholder="blur"
         blurDataURL={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
       />
-      <p className="pl-2">Release: {formatDate(movie.release_date)}</p>
-      <p className="pl-2"> Rating: {trimRating(movie.vote_average)}</p>
+      <p className="px-4 pt-2">Release: {formatDate(movie.release_date)}</p>
+      <p className="px-4 pb-2"> Rating: {trimRating(movie.vote_average)}</p>
       {isExpanded && (
         <div className="p-4 bg-gray-900 rounded-b-lg">
           <p className="text-lg text-white">{movie.overview}</p>
