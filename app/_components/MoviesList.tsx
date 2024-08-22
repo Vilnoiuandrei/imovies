@@ -23,7 +23,7 @@ interface MovieApiResponse {
 export default function MoviesList({ movies }: MovieApiResponse) {
   return (
     <div>
-      <ul>
+      <ul className="flex flex-col">
         {movies?.map((movie) => (
           <Movie key={movie.id} movie={movie} />
         ))}

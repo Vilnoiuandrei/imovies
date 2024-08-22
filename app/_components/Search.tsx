@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+interface SearchProps {
+  query: string;
+  setQuery: (value: string | ((value: string) => string)) => void;
+}
 
-export default function Search() {
-  const [query, setQuery] = useState("");
+export default function Search({ query, setQuery }: SearchProps) {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center text-xl text-black">
       <input
         className="rounded-lg h-8"
         placeholder=" 🔎 Search.."
