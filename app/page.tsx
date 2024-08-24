@@ -1,5 +1,6 @@
 "use client";
 
+import Loader from "./_components/Loader";
 import MoviesList from "./_components/MoviesList";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,15 +16,23 @@ const fetchPopularMovies = async () => {
   return res.json();
 };
 export default function Home() {
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["movies"],
     queryFn: () => fetchPopularMovies(),
     enabled: true,
   });
 
+  if (isPending)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader />
+      </div>
+    );
+
   return (
     <div>
       <MoviesList movies={data?.results} />
+      <Loader />
     </div>
   );
 }
