@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { CgProfile } from "react-icons/cg";
-import { FaBars, FaHome, FaRegBookmark } from "react-icons/fa";
+import { FaBars, FaHome, FaRegBookmark, FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
+import Search from "./Search";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState(false);
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -20,16 +22,16 @@ export default function Navigation() {
   };
   return (
     <div>
-      <nav className="flex justify-around border-b-4 border-yellow-500 mb-2">
+      <nav className="flex justify-around items-center border-b-4 border-yellow-500 mb-2 h-14">
         <FaBars
           onClick={togglePopup}
-          className="cursor-pointer  w-12 pt-4 h-12"
+          className="cursor-pointer  w-12  h-10 ml-4"
         />
+        <div className="bg-yellow-500 rounded-sm h-10  flex justify-center items-center">
+          <h1 className=" text-black text-3xl px-1  ">ITMB</h1>
+        </div>
 
-        <h1 className="bg-yellow-500 text-black text-3xl  my-2 px-2 py-2 rounded-sm h-12 w-32">
-          IMovies
-        </h1>
-        <span className="py-4">🔎</span>
+        <Search />
       </nav>
 
       {/* Overlay */}
@@ -42,7 +44,7 @@ export default function Navigation() {
 
       {/* Slide-in menu */}
       <div
-        className={`fixed top-0 left-0 w-3/4 md:w-1/3 h-screen bg-black z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-1/2 md:w-1/3 h-screen bg-black z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -57,19 +59,22 @@ export default function Navigation() {
         <nav className="flex flex-col items-center text-2xl justify-center h-72">
           <ul className="w-full flex flex-col items-center space-y-4 pt-6 gap-12">
             <li>
-              <Link href="/" className="flex items-center space-x-2">
+              <Link href="/" className="flex items-center space-x-2 w-36 mt-8">
                 <FaHome />
                 <span>Home</span>
               </Link>
             </li>
             <li>
-              <Link href="/myList" className="flex items-center space-x-2">
+              <Link href="/myList" className="flex items-center space-x-2 w-36">
                 <FaRegBookmark />
                 <span>My List</span>
               </Link>
             </li>
             <li>
-              <Link href="/account" className="flex items-center space-x-2">
+              <Link
+                href="/account"
+                className="flex items-center space-x-2 w-36"
+              >
                 <CgProfile />
                 <span>Account</span>
               </Link>
