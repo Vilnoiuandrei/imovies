@@ -47,6 +47,7 @@ export default function Movie({ movie }: MovieInterface) {
     >
       <h3 className="text-3xl text-center py-1">{movie.title}</h3>
       <Image
+        className="mx-auto"
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
         alt={movie.title}
         width={500}
