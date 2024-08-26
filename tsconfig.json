@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/types/app/movies/page.tsx"
+    ".next/types/app/movies/page.tsx",
+    "app/_lib/mongoDB.js"
   ],
   "exclude": ["node_modules"]
 }
