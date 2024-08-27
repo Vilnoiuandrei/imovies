@@ -3,11 +3,9 @@ import { auth } from "../_lib/auth";
 
 export default async function Account() {
   const session = await auth();
-  console.log(session);
-
-  return (
-    <div className="flex justify-center">
-      <SignIn />
-    </div>
-  );
+  const user = session?.user;
+  if (!session) {
+    return <SignIn />;
+  }
+  return <div className="flex justify-center">Account</div>;
 }
