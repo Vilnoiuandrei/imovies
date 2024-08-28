@@ -10,7 +10,6 @@ const authConfig = {
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
-
     CredentialsProvider({
       name: "Email and Password",
       credentials: {
@@ -23,29 +22,60 @@ const authConfig = {
       },
       async authorize(credentials) {
         const client = await clientPromise;
-        const db = client.db("iMovies");
+        const db = client.db("ITMB");
 
         const user = await db
           .collection("users")
           .findOne({ email: credentials.email });
 
         if (user && (await compare(credentials.password, user.password))) {
-          // Any object returned will be saved in `user` property of the JWT
           return { id: user._id, name: user.name, email: user.email };
         } else {
-          // If you return null, an error message will be displayed
           return null;
         }
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
+      const client = await clientPromise;
+      const db = client.db("ITMB");
+
+      // If a user is logging in for the first time (user object exists)
       if (user) {
-        token.userId = user.id;
+        // Check if the user exists in the database
+        let dbUser = await db
+          .collection("users")
+          .findOne({ email: user.email });
+
+        // If the user doesn't exist, create a new one
+        if (!dbUser) {
+          const newUser = {
+            name: user.name || profile?.name,
+            email: user.email,
+            createdAt: new Date(),
+          };
+          const result = await db.collection("users").insertOne(newUser);
+          dbUser = { ...newUser, _id: result.insertedId };
+        }
+
+        // Store the user ID in the token
+        token.userId = dbUser._id;
+      } else if (token.userId) {
+        // If the token already has a userId, skip database checks
+        const dbUser = await db
+          .collection("users")
+          .findOne({ _id: token.userId });
+
+        // Ensure the user still exists in the database
+        if (!dbUser) {
+          token.userId = null; // Invalidate token if the user was deleted
+        }
       }
+
       return token;
     },
+
     async session({ session, token }) {
       session.user.id = token.userId;
       return session;

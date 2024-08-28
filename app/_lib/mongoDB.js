@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "development") {
     global._mongoClientPromise = client
       .connect()
       .then((client) => {
-        console.log("Successfully connected to MongoDB in development");
+        console.log("Successfully connected to MongoDB in development", client);
         return client;
       })
       .catch((err) => {
