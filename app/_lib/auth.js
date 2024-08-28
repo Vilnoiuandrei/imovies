@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import clientPromise from "./mongoDB";
 import { compare } from "bcryptjs";
+import { use } from "react";
 
 const authConfig = {
   providers: [
@@ -24,6 +25,10 @@ const authConfig = {
         const client = await clientPromise;
         const db = client.db("ITMB");
 
+        if (!credentials.email || !credentials.password) {
+          return null;
+        }
+
         const user = await db
           .collection("users")
           .findOne({ email: credentials.email });
@@ -41,7 +46,6 @@ const authConfig = {
       const client = await clientPromise;
       const db = client.db("ITMB");
 
-      // If a user is logging in for the first time (user object exists)
       if (user) {
         // Check if the user exists in the database
         let dbUser = await db

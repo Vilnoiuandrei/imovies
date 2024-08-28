@@ -1,4 +1,5 @@
 import SignIn from "../_components/SignIn";
+import SignOut from "../_components/SignOut";
 import { auth } from "../_lib/auth";
 
 export default async function Account() {
@@ -9,8 +10,11 @@ export default async function Account() {
     return <SignIn />;
   }
   return (
-    <div className="flex justify-center">
-      <h1 className="text-3xl py-4">Welcome {user?.name}</h1>
+    <div className=" w-full">
+      <div className="flex justify-around">
+        <h1 className="text-3xl py-4">Welcome {user?.name}</h1>
+        <SignOut />
+      </div>
     </div>
   );
 }

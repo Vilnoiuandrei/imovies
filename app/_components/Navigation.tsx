@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { CgProfile } from "react-icons/cg";
-import { FaBars, FaHome, FaRegBookmark, FaSearch } from "react-icons/fa";
+import {
+  FaBars,
+  FaHome,
+  FaInfo,
+  FaRegBookmark,
+  FaSearch,
+} from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import Search from "./Search";
@@ -56,7 +62,7 @@ export default function Navigation() {
         />
 
         {/*  Navigation Menu */}
-        <nav className="flex flex-col items-center text-2xl justify-center h-72">
+        <nav className="flex flex-col items-center text-2xl justify-center ">
           <ul className="w-full flex flex-col items-center space-y-4 pt-6 gap-12">
             <li>
               <Link href="/" className="flex items-center space-x-2 w-36 mt-8">
@@ -77,6 +83,12 @@ export default function Navigation() {
               >
                 <CgProfile />
                 <span>Account</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="flex items-center space-x-2  w-36">
+                <FaInfo />
+                <span>About</span>
               </Link>
             </li>
           </ul>
