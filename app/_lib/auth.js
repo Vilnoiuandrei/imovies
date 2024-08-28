@@ -3,7 +3,6 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import clientPromise from "./mongoDB";
 import { compare } from "bcryptjs";
-import { use } from "react";
 
 const authConfig = {
   providers: [
@@ -58,6 +57,7 @@ const authConfig = {
             name: user.name || profile?.name,
             email: user.email,
             createdAt: new Date(),
+            movies: [],
           };
           const result = await db.collection("users").insertOne(newUser);
           dbUser = { ...newUser, _id: result.insertedId };
