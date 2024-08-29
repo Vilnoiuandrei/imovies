@@ -32,7 +32,6 @@ export default function Home() {
   return (
     <div>
       <MoviesList movies={data?.results} />
-      <Loader />
     </div>
   );
 }

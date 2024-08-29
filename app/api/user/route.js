@@ -3,14 +3,13 @@ import { auth } from "../../_lib/auth";
 import clientPromise from "../../_lib/mongoDB";
 
 export async function GET() {
+  const session = await auth();
+  console.log(session);
+  if (!session)
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   try {
-    const session = await auth();
-
-    if (!session)
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-
     const client = await clientPromise;
-    const db = client.db("imovies");
+    const db = client.db("ITMB");
     const email = session.user.email;
     const user = await db.collection("users").findOne({ email });
     if (!user)

@@ -4,10 +4,11 @@ import React from "react";
 
 export default function ErrorPage() {
   return (
-    <div>
-      <h1>Something went wrong</h1>
-      <p>We are sorry, but an error occurred. Please try again later.</p>
-      <Link href="/">Go back to the home page</Link>
+    <div className="flex justify-center items-center h-screen">
+      <div>
+        <p>We are sorry, but an error occurred. Please try again later.</p>
+        <Link href="/">Go back to the home page</Link>
+      </div>
     </div>
   );
 }
