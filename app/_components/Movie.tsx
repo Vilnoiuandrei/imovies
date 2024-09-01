@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import LikeMovies from "./LikeMovies";
 
 interface Movie {
   adult: boolean;
@@ -44,7 +45,7 @@ export default function Movie({ movie }: MovieInterface) {
   return (
     <li
       key={movie.id}
-      className="bg-gray-900 gird rounded-lg border-black cursor-pointer border-4  overflow-hidden text-lg"
+      className="bg-gray-900 gird rounded-lg border-black cursor-pointer border-4  overflow-hidden text-lg relative"
       onClick={handleToggle}
     >
       <h3 className="text-3xl text-center py-1">{movie.title}</h3>
@@ -59,6 +60,7 @@ export default function Movie({ movie }: MovieInterface) {
       />
       <p className="px-4 pt-2">Release: {formatDate(movie.release_date)}</p>
       <p className="px-4 pb-2"> Rating: {trimRating(movie.vote_average)}</p>
+      <LikeMovies movie={movie} />
       {isExpanded && (
         <div className="p-4 bg-gray-900 rounded-b-lg">
           <p className="text-lg text-white">{movie.overview}</p>

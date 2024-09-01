@@ -4,7 +4,6 @@ import clientPromise from "../../_lib/mongoDB";
 
 export async function GET() {
   const session = await auth();
-  console.log(session);
   if (!session)
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   try {
