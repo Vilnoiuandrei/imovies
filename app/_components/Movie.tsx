@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LikeMovies from "./LikeMovies";
+import { getSession } from "next-auth/react";
 
 interface Movie {
   adult: boolean;
@@ -37,6 +38,15 @@ function trimRating(rating: number) {
 }
 export default function Movie({ movie }: MovieInterface) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    const checkAuth = async () => {
+      const session = await getSession();
+      setIsAuthenticated(!!session);
+    };
+
+    checkAuth();
+  }, []);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -60,7 +70,8 @@ export default function Movie({ movie }: MovieInterface) {
       />
       <p className="px-4 pt-2">Release: {formatDate(movie.release_date)}</p>
       <p className="px-4 pb-2"> Rating: {trimRating(movie.vote_average)}</p>
-      <LikeMovies movie={movie} />
+      {isAuthenticated ? <LikeMovies movie={movie} /> : null}
+
       {isExpanded && (
         <div className="p-4 bg-gray-900 rounded-b-lg">
           <p className="text-lg text-white">{movie.overview}</p>

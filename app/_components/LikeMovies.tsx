@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 interface Movie {
   adult: boolean;
@@ -22,7 +22,17 @@ interface MovieInterface {
   movie: Movie;
 }
 
-const fetchLikedMovies = async (movieId: number | string) => {
+const fetchLikedMovies = async () => {
+  const res = await fetch("/api/userMovies");
+
+  if (!res.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return res.json();
+};
+
+const fetchAddLikedMovies = async (movieId: number | string) => {
   const res = await fetch("/api/userMovies", {
     method: "POST",
     headers: {
@@ -37,6 +47,7 @@ const fetchLikedMovies = async (movieId: number | string) => {
 
   return res.json();
 };
+
 const fetchRemovedLikedMovies = async (movieId: number | string) => {
   const res = await fetch("/api/userMovies/remove", {
     method: "POST",
@@ -53,31 +64,55 @@ const fetchRemovedLikedMovies = async (movieId: number | string) => {
   return res.json();
 };
 
+function checkLikedMovies(
+  userMoviesId: Array<number>,
+  movieId: number
+): boolean {
+  return userMoviesId.some((userMovieId) => userMovieId === movieId);
+}
+
 export default function LikeMovies({ movie }: MovieInterface) {
   const movieId = movie.id;
-  const { refetch: refetch1 } = useQuery({
-    queryKey: ["movieSaved"],
-    queryFn: () => fetchLikedMovies(movieId),
-    enabled: false,
-    refetchOnWindowFocus: false,
+
+  // Fetch liked movies
+  const { data: likedMoviesData, refetch: refetchLikedMovies } = useQuery({
+    queryKey: ["savedMovies"],
+    queryFn: () => fetchLikedMovies(),
+    enabled: true,
   });
-  const { refetch: refetch2 } = useQuery({
-    queryKey: ["movieSaved"],
-    queryFn: () => fetchRemovedLikedMovies(movieId),
-    enabled: false,
-    refetchOnWindowFocus: false,
+
+  // Mutation for adding a liked movie
+  const { mutate: addLike } = useMutation({
+    mutationFn: (movieId: number | string) => fetchAddLikedMovies(movieId),
+    onSuccess: () => refetchLikedMovies(), // Refetch liked movies after adding
   });
-  const [like, setLike] = useState(false);
+
+  // Mutation for removing a liked movie
+  const { mutate: removeLike } = useMutation({
+    mutationFn: (movieId: number | string) => fetchRemovedLikedMovies(movieId),
+    onSuccess: () => refetchLikedMovies(), // Refetch liked movies after removing
+  });
+
+  // Determine if the movie is liked
+  const [like, setLike] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (likedMoviesData) {
+      const likedMovies = likedMoviesData.movies;
+      setLike(checkLikedMovies(likedMovies, movieId));
+    }
+  }, [likedMoviesData, movieId]);
 
   function handleLiked(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
     e.preventDefault();
-    if (!like) {
-      refetch1();
+
+    if (like) {
+      removeLike(movieId);
     } else {
-      refetch2();
+      addLike(movieId);
     }
-    setLike((c) => !c);
+    setLike((prev) => !prev);
   }
 
   return (

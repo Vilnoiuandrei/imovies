@@ -25,7 +25,7 @@ export default function Movies() {
     checkAuth();
   }, []);
   const { data, isPending, error } = useQuery({
-    queryKey: ["savedMovies"],
+    queryKey: ["user"],
     queryFn: () => fetchSavedMovies(),
     enabled: true,
   });
