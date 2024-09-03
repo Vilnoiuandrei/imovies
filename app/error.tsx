@@ -5,9 +5,14 @@ import React from "react";
 export default function ErrorPage() {
   return (
     <div className="flex justify-center items-center h-screen">
-      <div>
+      <div className="flex flex-col gap-3">
         <p>We are sorry, but an error occurred. Please try again later.</p>
-        <Link href="/">Go back to the home page</Link>
+        <Link
+          href="/"
+          className="bg-white text-black p-3 text-center rounded-md"
+        >
+          Go back to the home page
+        </Link>
       </div>
     </div>
   );
