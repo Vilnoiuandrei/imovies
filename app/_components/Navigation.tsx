@@ -71,12 +71,6 @@ export default function Navigation() {
               </Link>
             </li>
             <li>
-              <Link href="/myList" className="flex items-center space-x-2 w-36">
-                <FaRegBookmark />
-                <span>My List</span>
-              </Link>
-            </li>
-            <li>
               <Link
                 href="/account"
                 className="flex items-center space-x-2 w-36"
