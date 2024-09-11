@@ -15,7 +15,7 @@ import Search from "./Search";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState(false);
+  // const [search, setSearch] = useState(false);
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -27,7 +27,7 @@ export default function Navigation() {
     setIsOpen(!isOpen);
   };
   return (
-    <div>
+    <div className="bg-black sticky top-0 z-50">
       <nav className="flex justify-around items-center border-b-4 border-yellow-500 mb-2 h-14">
         <FaBars
           onClick={togglePopup}
@@ -64,13 +64,19 @@ export default function Navigation() {
         {/*  Navigation Menu */}
         <nav className="flex flex-col items-center text-2xl justify-center ">
           <ul className="w-full flex flex-col items-center space-y-4 pt-6 gap-12">
-            <li>
+            <li onClick={togglePopup}>
               <Link href="/" className="flex items-center space-x-2 w-36 mt-8">
                 <FaHome />
                 <span>Home</span>
               </Link>
             </li>
-            <li>
+            <li onClick={togglePopup}>
+              <Link href="saves" className="flex items-center space-x-2 w-36">
+                <FaRegBookmark />
+                <span>Saves</span>
+              </Link>
+            </li>
+            <li onClick={togglePopup}>
               <Link
                 href="/account"
                 className="flex items-center space-x-2 w-36"
@@ -79,7 +85,7 @@ export default function Navigation() {
                 <span>Account</span>
               </Link>
             </li>
-            <li>
+            <li onClick={togglePopup}>
               <Link href="/about" className="flex items-center space-x-2  w-36">
                 <FaInfo />
                 <span>About</span>

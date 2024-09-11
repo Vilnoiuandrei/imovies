@@ -20,9 +20,11 @@ interface MoviesListProps {
   isAuthenticated: boolean;
 }
 
-const fetchPopularMovies = async (): Promise<MovieApiResponse> => {
+const fetchPopularMovies = async (
+  apiKey: string | undefined
+): Promise<MovieApiResponse> => {
   const res = await fetch(
-    "https://api.themoviedb.org/3/movie/popular?api_key=e40eb02fb75cbc3619cc44a458eb02a4"
+    `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`
   );
 
   if (!res.ok) {
@@ -33,9 +35,10 @@ const fetchPopularMovies = async (): Promise<MovieApiResponse> => {
 };
 
 export default function MoviesList({ isAuthenticated }: MoviesListProps) {
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
   const { data, isLoading, isError } = useQuery<MovieApiResponse>({
     queryKey: ["movies"],
-    queryFn: fetchPopularMovies,
+    queryFn: () => fetchPopularMovies(apiKey),
   });
 
   if (isLoading) return <Loader />;
